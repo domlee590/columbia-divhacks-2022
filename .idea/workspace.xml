@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="initial commit" />
+    <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/client/public/images/golang.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/public/images/nextjs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/_app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/api/hello.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/styles/Home.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/styles/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/yarn.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,18 +31,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/vincetiu/Documents/github/infura",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.8.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.7.18&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vincetiu/Documents/github/hackathon-template/client/public/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/vincetiu/.asdf/shims/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;/home/vincetiu/.asdf/shims/yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.linters.eslint&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/public/images" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -39,7 +74,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1663621983966</updated>
-      <workItem from="1663621990090" duration="62000" />
+      <workItem from="1663621990090" duration="184000" />
+      <workItem from="1663676542858" duration="292000" />
+      <workItem from="1663886045375" duration="522000" />
+      <workItem from="1663933498679" duration="1194000" />
+      <workItem from="1663939757203" duration="5433000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1663622027601</created>
@@ -48,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663622027601</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="initial commit">
+      <created>1663622056877</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1663622056877</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
