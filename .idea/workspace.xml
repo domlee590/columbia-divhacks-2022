@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="add tailwind">
-      <change afterPath="$PROJECT_DIR$/client/components/privateRoute.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/pages/auth/login.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/pages/auth/register.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/pages/main/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hackathon-template.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hackathon-template.iml" afterDir="false" />
+    <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="add auth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/_app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/main/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/main/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,30 +36,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "javascript.nodejs.core.library.configured.version": "18.8.0",
-    "javascript.nodejs.core.library.typings.version": "18.7.18",
-    "last_opened_file_path": "/home/vincetiu/Documents/github/hackathon-template/client/public/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "nodejs_interpreter_path": "/home/vincetiu/.asdf/shims/node",
-    "nodejs_package_manager_path": "/home/vincetiu/.asdf/shims/yarn",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.8.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.7.18&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vincetiu/Documents/github/hackathon-template/client/public/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/vincetiu/.asdf/shims/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;/home/vincetiu/.asdf/shims/yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/client/public/images" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="Python.index">
     <configuration name="index" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hackathon-template" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -98,6 +92,12 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.index" />
+        <item itemvalue="Python.index" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -113,7 +113,10 @@
       <workItem from="1663933498679" duration="1194000" />
       <workItem from="1663939757203" duration="5433000" />
       <workItem from="1663952300522" duration="7247000" />
-      <workItem from="1663963844623" duration="637000" />
+      <workItem from="1663963844623" duration="939000" />
+      <workItem from="1663964801226" duration="86000" />
+      <workItem from="1663965209957" duration="261000" />
+      <workItem from="1663965501638" duration="2253000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1663622027601</created>
@@ -136,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663952359118</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add auth">
+      <created>1663964718406</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1663964718406</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +166,26 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="add tailwind" />
-    <option name="LAST_COMMIT_MESSAGE" value="add tailwind" />
+    <MESSAGE value="add auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="add auth" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/index.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/server/index.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967719756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
   </component>
 </project>

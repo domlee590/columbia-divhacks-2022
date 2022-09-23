@@ -8,6 +8,7 @@ packages = [{include = "hackathon_template"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pymongo = "^4.2.0"
 
 
 [build-system]
