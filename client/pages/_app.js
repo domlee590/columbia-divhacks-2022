@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Head from "next/head";
+import Navbar from "../components/Navbar";
 
 function App({Component, pageProps}) {
 	return (
@@ -9,6 +10,7 @@ function App({Component, pageProps}) {
 				<meta name="description" content="A hackathon template website"/>
 				<link rel="icon" href="/favicon.ico"/>
 			</Head>
+			<Navbar />
 			<main>
 				<Component {...pageProps} />
 			</main>

@@ -1,0 +1,159 @@
+Index: .idea/hackathon-template.iml
+===================================================================
+diff --git a/.idea/hackathon-template.iml b/.idea/hackathon-template.iml
+deleted file mode 100644
+--- a/.idea/hackathon-template.iml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ /dev/null	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="WEB_MODULE" version="4">
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$">
+-      <excludeFolder url="file://$MODULE_DIR$/temp" />
+-      <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+-      <excludeFolder url="file://$MODULE_DIR$/tmp" />
+-    </content>
+-    <orderEntry type="jdk" jdkName="Poetry (hackathon-template) (2)" jdkType="Python SDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/misc.xml
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+--- a/.idea/misc.xml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ /dev/null	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (hackathon-template) (2)" project-jdk-type="Python SDK" />
+-</project>
+\ No newline at end of file
+Index: .idea/jsLibraryMappings.xml
+===================================================================
+diff --git a/.idea/jsLibraryMappings.xml b/.idea/jsLibraryMappings.xml
+deleted file mode 100644
+--- a/.idea/jsLibraryMappings.xml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ /dev/null	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="JavaScriptLibraryMappings">
+-    <includedPredefinedLibrary name="Node.js Core" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: Makefile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>APP_NAME = hackathon-template\n\n.DEFAULT_GOAL=all\nDOCKERFILES = $(shell find -name 'Dockerfile')\n.PHONY: $(DOCKERFILES)\n\nall: docker-images clean-dev deploy-dev\n\ninstall:\n\tkind create cluster --config kind.config --name $(APP_NAME)\n\tkubectl apply --filename https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml\n\n\ndocker-images: $(DOCKERFILES)\n\n$(DOCKERFILES): %/Dockerfile: %\n\tdocker build -t invincibot/$(APP_NAME)-$< $<\n\tdocker push invincibot/$(APP_NAME)-$<\n\ndeploy-dev:\n\tkubectl apply -f \"k8s/*.yml\"\n\nclean-dev:\n\tkubectl delete -f \"k8s/*.yml\"\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Makefile b/Makefile
+--- a/Makefile	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/Makefile	(date 1663981751866)
+@@ -4,7 +4,7 @@
+ DOCKERFILES = $(shell find -name 'Dockerfile')
+ .PHONY: $(DOCKERFILES)
+ 
+-all: docker-images clean-dev deploy-dev
++all: docker-images clean deploy
+ 
+ install:
+ 	kind create cluster --config kind.config --name $(APP_NAME)
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"989c1926-623a-4640-992a-db48e651abef\" name=\"Changes\" comment=\"add auth\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/client/pages/main/dashboard.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/client/pages/main/dashboard.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/pyproject.toml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pyproject.toml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/server/index.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/server/index.py\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"JavaScript File\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2F0HG3ldShSFolGOpNx3YNbk1Cv\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.8.0&quot;,\n    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.7.18&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/home/vincetiu/Documents/github/hackathon-template/client/public/images&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,\n    &quot;nodejs_interpreter_path&quot;: &quot;/home/vincetiu/.asdf/shims/node&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;/home/vincetiu/.asdf/shims/yarn&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/client/public/images\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Python.index\">\n    <configuration name=\"index\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"hackathon-template\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/server\" />\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/server/index.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\n      <option name=\"INPUT_FILE\" value=\"\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"dev\" type=\"js.build_tools.npm\" nameIsGenerated=\"true\">\n      <package-json value=\"$PROJECT_DIR$/client/package.json\" />\n      <command value=\"run\" />\n      <scripts>\n        <script value=\"dev\" />\n      </scripts>\n      <node-interpreter value=\"project\" />\n      <envs />\n      <method v=\"2\" />\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Python.index\" />\n        <item itemvalue=\"Python.index\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"989c1926-623a-4640-992a-db48e651abef\" name=\"Changes\" comment=\"\" />\n      <created>1663621983966</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1663621983966</updated>\n      <workItem from=\"1663621990090\" duration=\"184000\" />\n      <workItem from=\"1663676542858\" duration=\"292000\" />\n      <workItem from=\"1663886045375\" duration=\"522000\" />\n      <workItem from=\"1663933498679\" duration=\"1194000\" />\n      <workItem from=\"1663939757203\" duration=\"5433000\" />\n      <workItem from=\"1663952300522\" duration=\"7247000\" />\n      <workItem from=\"1663963844623\" duration=\"939000\" />\n      <workItem from=\"1663964801226\" duration=\"86000\" />\n      <workItem from=\"1663965209957\" duration=\"261000\" />\n      <workItem from=\"1663965501638\" duration=\"2253000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"initial commit\">\n      <created>1663622027601</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663622027601</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"initial commit\">\n      <created>1663622056877</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663622056877</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"add tailwind\">\n      <created>1663952359118</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663952359118</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"add auth\">\n      <created>1663964718406</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663964718406</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"5\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"initial commit\" />\n    <MESSAGE value=\"add tailwind\" />\n    <MESSAGE value=\"add auth\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"add auth\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\n          <url>file://$PROJECT_DIR$/server/index.py</url>\n          <line>31</line>\n          <option name=\"timeStamp\" value=\"2\" />\n        </line-breakpoint>\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\n          <url>file://$PROJECT_DIR$/server/index.py</url>\n          <line>40</line>\n          <option name=\"timeStamp\" value=\"3\" />\n        </line-breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\n    <SUITE FILE_PATH=\"coverage/hackathon_template$index.coverage\" NAME=\"index Coverage Results\" MODIFIED=\"1663967719756\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$/server\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/.idea/workspace.xml	(date 1663984115492)
+@@ -2,10 +2,12 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="add auth">
++      <change beforePath="$PROJECT_DIR$/.idea/hackathon-template.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/client/pages/main/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/main/dashboard.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/server/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -59,7 +61,7 @@
+       <recent name="$PROJECT_DIR$/client/public/images" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Python.index">
++  <component name="RunManager" selected="npm.dev">
+     <configuration name="index" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="hackathon-template" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+@@ -92,12 +94,6 @@
+       <envs />
+       <method v="2" />
+     </configuration>
+-    <recent_temporary>
+-      <list>
+-        <item itemvalue="Python.index" />
+-        <item itemvalue="Python.index" />
+-      </list>
+-    </recent_temporary>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -169,23 +165,4 @@
+     <MESSAGE value="add auth" />
+     <option name="LAST_COMMIT_MESSAGE" value="add auth" />
+   </component>
+-  <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+-          <url>file://$PROJECT_DIR$/server/index.py</url>
+-          <line>31</line>
+-          <option name="timeStamp" value="2" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+-          <url>file://$PROJECT_DIR$/server/index.py</url>
+-          <line>40</line>
+-          <option name="timeStamp" value="3" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
+-  </component>
+-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+-    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967719756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
+-  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/hackathon-template.iml\" filepath=\"$PROJECT_DIR$/.idea/hackathon-template.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/.idea/modules.xml	(date 1663981761442)
+@@ -2,7 +2,7 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/hackathon-template.iml" filepath="$PROJECT_DIR$/.idea/hackathon-template.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/columbia-divhacks-2022.iml" filepath="$PROJECT_DIR$/.idea/columbia-divhacks-2022.iml" />
+     </modules>
+   </component>
+-</project>
+\ No newline at end of file
++</project>
