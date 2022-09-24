@@ -23,3 +23,58 @@ body {
   color: white;
   font-size: larger;
 }
+
+#Jumbo-Banner-Flex-Display{
+  display: flex;
+}
+
+.Jumbo-Banner-Container{
+  width: 90%;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 20px;
+}
+.Jumbo-Banner-Text-Container {
+width: 80%;
+align-self: center;
+z-index: 3;
+padding: 4%;
+}
+
+.Jumbo-Banner-Text-Container h2{
+  font-size: 64px;
+  font-weight: 400;
+  max-width: 10ch;
+}
+
+.Jumbo-Banner-Flex-Display{
+  display: flex;
+}
+#Jumbo-Banner-Plane-Container{
+position: relative;
+max-width: 50%;
+max-height: 50%;
+background-image: "https://st.depositphotos.com/2977159/3953/i/600/depositphotos_39530207-stock-photo-hands-holding-green-heart-shaped.jpg";
+}
+
+#Jumbo-Banner-Cloud-One , #Jumbo-Banner-Cloud-Two{
+  position: absolute;
+}
+#Jumbo-Banner-Cloud-One{
+  left: -1%;
+}
+#Jumbo-Banner-Cloud-Two{
+  right: -1%;
+}
+
+@media screen and (max-width:950px){
+  #Jumbo-Banner-Plane-Container{
+      display: none;
+  }
+}
+.container-testing{
+  background-image: url('https://img.freepik.com/free-vector/gradient-mountain-landscape_52683-77407.jpg?w=2000');
+	background-size: cover;
+	background-position: top center;
+  filter: drop-shadow(rgba(99, 99, 99, 0.2) 0px 2px 8px 0px);
+}
