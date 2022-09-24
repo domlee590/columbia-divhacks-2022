@@ -1,6 +1,9 @@
 import '../styles/globals.css'
 import Head from "next/head";
 import Navbar from "../components/Navbar";
+import {useCookies} from "react-cookie";
+import React from "react";
+import {locations} from "../locations";
 
 function App({Component, pageProps}) {
 	return (
