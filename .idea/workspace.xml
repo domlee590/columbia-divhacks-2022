@@ -3,9 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="add auth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pages/main/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/main/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/k8s/client.yml" beforeDir="false" afterPath="$PROJECT_DIR$/k8s/client.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/k8s/ingress.yml" beforeDir="false" afterPath="$PROJECT_DIR$/k8s/ingress.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/k8s/server.yml" beforeDir="false" afterPath="$PROJECT_DIR$/k8s/server.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pyproject.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,6 +122,7 @@
       <workItem from="1663964801226" duration="86000" />
       <workItem from="1663965209957" duration="261000" />
       <workItem from="1663965501638" duration="2253000" />
+      <workItem from="1663981777595" duration="2079000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1663622027601</created>
@@ -186,6 +192,6 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967719756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
+    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967956752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
   </component>
 </project>

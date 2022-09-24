@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: invincibot/hackathon-template-server
+          image: invincibot/columbia-divhacks-2022-server
           ports:
             - containerPort: 5000
 ---

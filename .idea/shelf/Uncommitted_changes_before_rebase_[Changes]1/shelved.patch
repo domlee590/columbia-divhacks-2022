@@ -1,0 +1,419 @@
+Index: Makefile
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>APP_NAME = hackathon-template\n\n.DEFAULT_GOAL=all\nDOCKERFILES = $(shell find -name 'Dockerfile')\n.PHONY: $(DOCKERFILES)\n\nall: docker-images clean-dev deploy-dev\n\ninstall:\n\tkind create cluster --config kind.config --name $(APP_NAME)\n\tkubectl apply --filename https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml\n\n\ndocker-images: $(DOCKERFILES)\n\n$(DOCKERFILES): %/Dockerfile: %\n\tdocker build -t invincibot/$(APP_NAME)-$< $<\n\tdocker push invincibot/$(APP_NAME)-$<\n\ndeploy-dev:\n\tkubectl apply -f \"k8s/*.yml\"\n\nclean-dev:\n\tkubectl delete -f \"k8s/*.yml\"\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Makefile b/Makefile
+--- a/Makefile	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/Makefile	(date 1663982450449)
+@@ -1,24 +1,25 @@
+-APP_NAME = hackathon-template
++APP_NAME = columbia-divhacks-2022
+ 
+ .DEFAULT_GOAL=all
+ DOCKERFILES = $(shell find -name 'Dockerfile')
+ .PHONY: $(DOCKERFILES)
+ 
+-all: docker-images clean-dev deploy-dev
++all: docker-images clean deploy
+ 
+ install:
+-	kind create cluster --config kind.config --name $(APP_NAME)
++    # kind create cluster --config kind.config --name $(APP_NAME)
+ 	kubectl apply --filename https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
+ 
+ 
+ docker-images: $(DOCKERFILES)
++	echo $(DOCKERFILES)
+ 
+ $(DOCKERFILES): %/Dockerfile: %
+ 	docker build -t invincibot/$(APP_NAME)-$< $<
+ 	docker push invincibot/$(APP_NAME)-$<
+ 
+-deploy-dev:
++deploy:
+ 	kubectl apply -f "k8s/*.yml"
+ 
+-clean-dev:
++clean:
+ 	kubectl delete -f "k8s/*.yml"
+Index: k8s/server.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: server\n  labels:\n    app: server\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: server\n  template:\n    metadata:\n      labels:\n        app: server\n    spec:\n      containers:\n        - name: server\n          image: invincibot/hackathon-template-server\n          ports:\n            - containerPort: 5000\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: server\n  labels:\n    app: server\nspec:\n  ports:\n    - protocol: \"TCP\"\n      name: \"5000\"\n      port: 5000\n      targetPort: 5000\n  selector:\n    app: server\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/k8s/server.yml b/k8s/server.yml
+--- a/k8s/server.yml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/k8s/server.yml	(date 1663982648406)
+@@ -16,7 +16,7 @@
+     spec:
+       containers:
+         - name: server
+-          image: invincibot/hackathon-template-server
++          image: invincibot/columbia-divhacks-2022-server
+           ports:
+             - containerPort: 5000
+ ---
+Index: k8s/client.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: client\n  labels:\n    app: client\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: client\n  template:\n    metadata:\n      labels:\n        app: client\n    spec:\n      containers:\n        - name: client\n          image: invincibot/hackathon-template-client\n          ports:\n            - containerPort: 3000\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: client\n  labels:\n    app: client\nspec:\n  ports:\n    - protocol: \"TCP\"\n      name: \"3000\"\n      port: 3000\n      targetPort: 3000\n  selector:\n    app: client\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/k8s/client.yml b/k8s/client.yml
+--- a/k8s/client.yml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/k8s/client.yml	(date 1663982648398)
+@@ -16,7 +16,7 @@
+     spec:
+       containers:
+         - name: client
+-          image: invincibot/hackathon-template-client
++          image: invincibot/columbia-divhacks-2022-client
+           ports:
+             - containerPort: 3000
+ ---
+Index: server/poetry.lock
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[[package]]\nname = \"click\"\nversion = \"8.1.3\"\ndescription = \"Composable command line interface toolkit\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[package.dependencies]\ncolorama = {version = \"*\", markers = \"platform_system == \\\"Windows\\\"\"}\n\n[[package]]\nname = \"colorama\"\nversion = \"0.4.5\"\ndescription = \"Cross-platform colored terminal text.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*\"\n\n[[package]]\nname = \"Flask\"\nversion = \"2.2.2\"\ndescription = \"A simple framework for building complex web applications.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[package.dependencies]\nclick = \">=8.0\"\nitsdangerous = \">=2.0\"\nJinja2 = \">=3.0\"\nWerkzeug = \">=2.2.2\"\n\n[package.extras]\nasync = [\"asgiref (>=3.2)\"]\ndotenv = [\"python-dotenv\"]\n\n[[package]]\nname = \"itsdangerous\"\nversion = \"2.1.2\"\ndescription = \"Safely pass data to untrusted environments and back.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[[package]]\nname = \"Jinja2\"\nversion = \"3.1.2\"\ndescription = \"A very fast and expressive template engine.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[package.dependencies]\nMarkupSafe = \">=2.0\"\n\n[package.extras]\ni18n = [\"Babel (>=2.7)\"]\n\n[[package]]\nname = \"MarkupSafe\"\nversion = \"2.1.1\"\ndescription = \"Safely add untrusted strings to HTML/XML markup.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[[package]]\nname = \"Werkzeug\"\nversion = \"2.2.2\"\ndescription = \"The comprehensive WSGI web application library.\"\ncategory = \"main\"\noptional = false\npython-versions = \">=3.7\"\n\n[package.dependencies]\nMarkupSafe = \">=2.1.1\"\n\n[package.extras]\nwatchdog = [\"watchdog\"]\n\n[metadata]\nlock-version = \"1.1\"\npython-versions = \"^3.10\"\ncontent-hash = \"61c8106ebf02f3e22cf4b70602d08ce90b3b932cabe46c2288eac49431a9bc27\"\n\n[metadata.files]\nclick = [\n    {file = \"click-8.1.3-py3-none-any.whl\", hash = \"sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48\"},\n    {file = \"click-8.1.3.tar.gz\", hash = \"sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e\"},\n]\ncolorama = [\n    {file = \"colorama-0.4.5-py2.py3-none-any.whl\", hash = \"sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da\"},\n    {file = \"colorama-0.4.5.tar.gz\", hash = \"sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4\"},\n]\nFlask = [\n    {file = \"Flask-2.2.2-py3-none-any.whl\", hash = \"sha256:b9c46cc36662a7949f34b52d8ec7bb59c0d74ba08ba6cb9ce9adc1d8676d9526\"},\n    {file = \"Flask-2.2.2.tar.gz\", hash = \"sha256:642c450d19c4ad482f96729bd2a8f6d32554aa1e231f4f6b4e7e5264b16cca2b\"},\n]\nitsdangerous = [\n    {file = \"itsdangerous-2.1.2-py3-none-any.whl\", hash = \"sha256:2c2349112351b88699d8d4b6b075022c0808887cb7ad10069318a8b0bc88db44\"},\n    {file = \"itsdangerous-2.1.2.tar.gz\", hash = \"sha256:5dbbc68b317e5e42f327f9021763545dc3fc3bfe22e6deb96aaf1fc38874156a\"},\n]\nJinja2 = [\n    {file = \"Jinja2-3.1.2-py3-none-any.whl\", hash = \"sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61\"},\n    {file = \"Jinja2-3.1.2.tar.gz\", hash = \"sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852\"},\n]\nMarkupSafe = [\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-macosx_10_9_universal2.whl\", hash = \"sha256:86b1f75c4e7c2ac2ccdaec2b9022845dbb81880ca318bb7a0a01fbf7813e3812\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-macosx_10_9_x86_64.whl\", hash = \"sha256:f121a1420d4e173a5d96e47e9a0c0dcff965afdf1626d28de1460815f7c4ee7a\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl\", hash = \"sha256:a49907dd8420c5685cfa064a1335b6754b74541bbb3706c259c02ed65b644b3e\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl\", hash = \"sha256:10c1bfff05d95783da83491be968e8fe789263689c02724e0c691933c52994f5\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl\", hash = \"sha256:b7bd98b796e2b6553da7225aeb61f447f80a1ca64f41d83612e6139ca5213aa4\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-musllinux_1_1_aarch64.whl\", hash = \"sha256:b09bf97215625a311f669476f44b8b318b075847b49316d3e28c08e41a7a573f\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-musllinux_1_1_i686.whl\", hash = \"sha256:694deca8d702d5db21ec83983ce0bb4b26a578e71fbdbd4fdcd387daa90e4d5e\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-musllinux_1_1_x86_64.whl\", hash = \"sha256:efc1913fd2ca4f334418481c7e595c00aad186563bbc1ec76067848c7ca0a933\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-win32.whl\", hash = \"sha256:4a33dea2b688b3190ee12bd7cfa29d39c9ed176bda40bfa11099a3ce5d3a7ac6\"},\n    {file = \"MarkupSafe-2.1.1-cp310-cp310-win_amd64.whl\", hash = \"sha256:dda30ba7e87fbbb7eab1ec9f58678558fd9a6b8b853530e176eabd064da81417\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-macosx_10_9_x86_64.whl\", hash = \"sha256:671cd1187ed5e62818414afe79ed29da836dde67166a9fac6d435873c44fdd02\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl\", hash = \"sha256:3799351e2336dc91ea70b034983ee71cf2f9533cdff7c14c90ea126bfd95d65a\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl\", hash = \"sha256:e72591e9ecd94d7feb70c1cbd7be7b3ebea3f548870aa91e2732960fa4d57a37\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl\", hash = \"sha256:6fbf47b5d3728c6aea2abb0589b5d30459e369baa772e0f37a0320185e87c980\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-musllinux_1_1_aarch64.whl\", hash = \"sha256:d5ee4f386140395a2c818d149221149c54849dfcfcb9f1debfe07a8b8bd63f9a\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-musllinux_1_1_i686.whl\", hash = \"sha256:bcb3ed405ed3222f9904899563d6fc492ff75cce56cba05e32eff40e6acbeaa3\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-musllinux_1_1_x86_64.whl\", hash = \"sha256:e1c0b87e09fa55a220f058d1d49d3fb8df88fbfab58558f1198e08c1e1de842a\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-win32.whl\", hash = \"sha256:8dc1c72a69aa7e082593c4a203dcf94ddb74bb5c8a731e4e1eb68d031e8498ff\"},\n    {file = \"MarkupSafe-2.1.1-cp37-cp37m-win_amd64.whl\", hash = \"sha256:97a68e6ada378df82bc9f16b800ab77cbf4b2fada0081794318520138c088e4a\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-macosx_10_9_universal2.whl\", hash = \"sha256:e8c843bbcda3a2f1e3c2ab25913c80a3c5376cd00c6e8c4a86a89a28c8dc5452\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-macosx_10_9_x86_64.whl\", hash = \"sha256:0212a68688482dc52b2d45013df70d169f542b7394fc744c02a57374a4207003\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl\", hash = \"sha256:8e576a51ad59e4bfaac456023a78f6b5e6e7651dcd383bcc3e18d06f9b55d6d1\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl\", hash = \"sha256:4b9fe39a2ccc108a4accc2676e77da025ce383c108593d65cc909add5c3bd601\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl\", hash = \"sha256:96e37a3dc86e80bf81758c152fe66dbf60ed5eca3d26305edf01892257049925\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-musllinux_1_1_aarch64.whl\", hash = \"sha256:6d0072fea50feec76a4c418096652f2c3238eaa014b2f94aeb1d56a66b41403f\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-musllinux_1_1_i686.whl\", hash = \"sha256:089cf3dbf0cd6c100f02945abeb18484bd1ee57a079aefd52cffd17fba910b88\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-musllinux_1_1_x86_64.whl\", hash = \"sha256:6a074d34ee7a5ce3effbc526b7083ec9731bb3cbf921bbe1d3005d4d2bdb3a63\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-win32.whl\", hash = \"sha256:421be9fbf0ffe9ffd7a378aafebbf6f4602d564d34be190fc19a193232fd12b1\"},\n    {file = \"MarkupSafe-2.1.1-cp38-cp38-win_amd64.whl\", hash = \"sha256:fc7b548b17d238737688817ab67deebb30e8073c95749d55538ed473130ec0c7\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-macosx_10_9_universal2.whl\", hash = \"sha256:e04e26803c9c3851c931eac40c695602c6295b8d432cbe78609649ad9bd2da8a\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-macosx_10_9_x86_64.whl\", hash = \"sha256:b87db4360013327109564f0e591bd2a3b318547bcef31b468a92ee504d07ae4f\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl\", hash = \"sha256:99a2a507ed3ac881b975a2976d59f38c19386d128e7a9a18b7df6fff1fd4c1d6\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl\", hash = \"sha256:56442863ed2b06d19c37f94d999035e15ee982988920e12a5b4ba29b62ad1f77\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl\", hash = \"sha256:3ce11ee3f23f79dbd06fb3d63e2f6af7b12db1d46932fe7bd8afa259a5996603\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-musllinux_1_1_aarch64.whl\", hash = \"sha256:33b74d289bd2f5e527beadcaa3f401e0df0a89927c1559c8566c066fa4248ab7\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-musllinux_1_1_i686.whl\", hash = \"sha256:43093fb83d8343aac0b1baa75516da6092f58f41200907ef92448ecab8825135\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-musllinux_1_1_x86_64.whl\", hash = \"sha256:8e3dcf21f367459434c18e71b2a9532d96547aef8a871872a5bd69a715c15f96\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-win32.whl\", hash = \"sha256:d4306c36ca495956b6d568d276ac11fdd9c30a36f1b6eb928070dc5360b22e1c\"},\n    {file = \"MarkupSafe-2.1.1-cp39-cp39-win_amd64.whl\", hash = \"sha256:46d00d6cfecdde84d40e572d63735ef81423ad31184100411e6e3388d405e247\"},\n    {file = \"MarkupSafe-2.1.1.tar.gz\", hash = \"sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b\"},\n]\nWerkzeug = [\n    {file = \"Werkzeug-2.2.2-py3-none-any.whl\", hash = \"sha256:f979ab81f58d7318e064e99c4506445d60135ac5cd2e177a2de0089bfd4c9bd5\"},\n    {file = \"Werkzeug-2.2.2.tar.gz\", hash = \"sha256:7ea2d48322cc7c0f8b3a215ed73eabd7b5d75d0b50e31ab006286ccff9e00b8f\"},\n]\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/server/poetry.lock b/server/poetry.lock
+--- a/server/poetry.lock	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/server/poetry.lock	(date 1663982789119)
+@@ -17,6 +17,22 @@
+ optional = false
+ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+ 
++[[package]]
++name = "dnspython"
++version = "2.2.1"
++description = "DNS toolkit"
++category = "main"
++optional = false
++python-versions = ">=3.6,<4.0"
++
++[package.extras]
++curio = ["curio (>=1.2,<2.0)", "sniffio (>=1.1,<2.0)"]
++dnssec = ["cryptography (>=2.6,<37.0)"]
++doh = ["h2 (>=4.1.0)", "httpx (>=0.21.1)", "requests (>=2.23.0,<3.0.0)", "requests-toolbelt (>=0.9.1,<0.10.0)"]
++idna = ["idna (>=2.1,<4.0)"]
++trio = ["trio (>=0.14,<0.20)"]
++wmi = ["wmi (>=1.5.1,<2.0.0)"]
++
+ [[package]]
+ name = "Flask"
+ version = "2.2.2"
+@@ -65,6 +81,26 @@
+ optional = false
+ python-versions = ">=3.7"
+ 
++[[package]]
++name = "pymongo"
++version = "4.2.0"
++description = "Python driver for MongoDB <http://www.mongodb.org>"
++category = "main"
++optional = false
++python-versions = ">=3.7"
++
++[package.dependencies]
++dnspython = {version = ">=1.16.0,<3.0.0", optional = true, markers = "extra == \"srv\""}
++
++[package.extras]
++aws = ["pymongo-auth-aws (<2.0.0)"]
++encryption = ["pymongocrypt (>=1.3.0,<2.0.0)"]
++gssapi = ["pykerberos"]
++ocsp = ["certifi", "pyopenssl (>=17.2.0)", "requests (<3.0.0)", "service-identity (>=18.1.0)"]
++snappy = ["python-snappy"]
++srv = ["dnspython (>=1.16.0,<3.0.0)"]
++zstd = ["zstandard"]
++
+ [[package]]
+ name = "Werkzeug"
+ version = "2.2.2"
+@@ -82,7 +118,7 @@
+ [metadata]
+ lock-version = "1.1"
+ python-versions = "^3.10"
+-content-hash = "61c8106ebf02f3e22cf4b70602d08ce90b3b932cabe46c2288eac49431a9bc27"
++content-hash = "0c80470b8d5c851f226db54e1b5205d2acd0f5d6e3b43494b3db4165c9b4078e"
+ 
+ [metadata.files]
+ click = [
+@@ -93,6 +129,10 @@
+     {file = "colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},
+     {file = "colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
+ ]
++dnspython = [
++    {file = "dnspython-2.2.1-py3-none-any.whl", hash = "sha256:a851e51367fb93e9e1361732c1d60dab63eff98712e503ea7d92e6eccb109b4f"},
++    {file = "dnspython-2.2.1.tar.gz", hash = "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e"},
++]
+ Flask = [
+     {file = "Flask-2.2.2-py3-none-any.whl", hash = "sha256:b9c46cc36662a7949f34b52d8ec7bb59c0d74ba08ba6cb9ce9adc1d8676d9526"},
+     {file = "Flask-2.2.2.tar.gz", hash = "sha256:642c450d19c4ad482f96729bd2a8f6d32554aa1e231f4f6b4e7e5264b16cca2b"},
+@@ -147,6 +187,75 @@
+     {file = "MarkupSafe-2.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:46d00d6cfecdde84d40e572d63735ef81423ad31184100411e6e3388d405e247"},
+     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
+ ]
++pymongo = [
++    {file = "pymongo-4.2.0-cp310-cp310-macosx_10_15_universal2.whl", hash = "sha256:b9e4981a65f8500a3a46bb3a1e81b9feb45cf0b2115ad9c4f8d517326d026940"},
++    {file = "pymongo-4.2.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1c81414b706627f15e921e29ae2403aab52e33e36ed92ed989c602888d7c3b90"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux1_i686.whl", hash = "sha256:c549bb519456ee230e92f415c5b4d962094caac0fdbcc4ed22b576f66169764e"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:70216ec4c248213ae95ea499b6314c385ce01a5946c448fb22f6c8395806e740"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_i686.whl", hash = "sha256:8a86e8c2ac2ec87141e1c6cb00bdb18a4560f06e5f96769abcd1dda24dc0e764"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_ppc64le.whl", hash = "sha256:314b556afd72eb21a6a10bd1f45ef252509f014f80207db59c97372103c88237"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_s390x.whl", hash = "sha256:902e2c9030cb042c49750bc70d72d830d42c64ea0df5ff8630c171e065c93dd7"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:c69ef5906dcd6ec565d4d887ba97ceb2a84f3b614307ee3b4780cb1ea40b1867"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:07564178ecc203a84f63e72972691af6c0c82d2dc0c9da66ba711695276089ba"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:f47d5f10922cf7f7dfcd1406bd0926cef6d866a75953c3745502dffd7ac197dd"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:4cadaaa5c19ad23fc84559e90284f2eb003c36958ebb2c06f286b678f441285f"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d94f535df9f539615bc3dbbef185ded3b609373bb44ca1afffcabac70202678a"},
++    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:147a23cd96feb67606ac957744d8d25b013426cdc3c7164a4f99bd8253f649e3"},
++    {file = "pymongo-4.2.0-cp310-cp310-win32.whl", hash = "sha256:ecdcb0d4e9b08b739035f57a09330efc6f464bd7f942b63897395d996ca6ebd5"},
++    {file = "pymongo-4.2.0-cp310-cp310-win_amd64.whl", hash = "sha256:8c223aea52c359cc8fdee5bd3475532590755c269ec4d4fe581acd47a44e9952"},
++    {file = "pymongo-4.2.0-cp37-cp37m-macosx_10_6_intel.whl", hash = "sha256:fe0820d169635e41c14a5d21514282e0b93347878666ec9d5d3bf0eed0649948"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:e39cacee70a98758f9b2da53ee175378f07c60113b1fa4fae40cbaee5583181e"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:701d331060dae72bf3ebdb82924405d14136a69282ccb00c89fc69dee21340b4"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:e08fe1731f5429435b8dea1db9663f9ed1812915ff803fc9991c7c4841ed62ad"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_i686.whl", hash = "sha256:60c470a58c5b62b1b12a5f5458f8e2f2f67b94e198d03dc5352f854d9230c394"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_ppc64le.whl", hash = "sha256:b211e161b6cc2790e0d640ad38e0429d06c944e5da23410f4dc61809dba25095"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_s390x.whl", hash = "sha256:ed90a9de4431cbfb2f3b2ef0c5fd356e61c85117b2be4db3eae28cb409f6e2d5"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:68e1e49a5675748233f7b05330f092582cd52f2850b4244939fd75ba640593ed"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:764fc15418d94bce5c2f8ebdbf66544f96f42efb1364b61e715e5b33281b388d"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:e64442aba81ed4df1ca494b87bf818569a1280acaa73071c68014f7a884e83f1"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:83168126ae2457d1a19b2af665cafa7ef78c2dcff192d7d7b5dad6b36c73ae24"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:69d0180bca594e81cdb4a2af328bdb4046f59e10aaeef7619496fe64f2ec918c"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:80cbf0b043061451660099fff9001a7faacb2c9c983842b4819526e2f944dc6c"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:e1b8f5e2f9637492b0da4d51f78ecb17786e61d6c461ead8542c944750faf4f9"},
++    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:1a957cdc2b26eeed4d8f1889a40c6023dd1bd94672dd0f5ce327314f2caaefd4"},
++    {file = "pymongo-4.2.0-cp37-cp37m-win32.whl", hash = "sha256:6bd5888997ea3eae9830c6cc7964b61dcfbc50eb3a5a6ce56ad5f86d5579b11c"},
++    {file = "pymongo-4.2.0-cp37-cp37m-win_amd64.whl", hash = "sha256:dc24737d24ce0de762bee9c2a884639819485f679bbac8ab5be9c161ef6f9b2c"},
++    {file = "pymongo-4.2.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:193cc97d44b1e6d2253ea94e30c6f94f994efb7166e2452af4df55825266e88b"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux1_i686.whl", hash = "sha256:e152c26ffc30331e9d57591fc4c05453c209aa20ba299d1deb7173f7d1958c22"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:8a9bc4dcfc2bda69ee88cdb7a89b03f2b8eca668519b704384a264dea2db4209"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:8cbb868e88c4eee1c53364bb343d226a3c0e959e791e6828030cb78f46cfcbe3"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_i686.whl", hash = "sha256:2bfe6b59f431f40fa545547616f4acf0c0c4b64518b1f951083e3bad06eb368b"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_ppc64le.whl", hash = "sha256:ff66014687598823b6b23751884b4aa67eb934445406d95894dfc60cb7bfcc18"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_s390x.whl", hash = "sha256:31c50da4a080166bc29403aa91f4c76e0889b4f24928d1b60508a37c1bf87f9a"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:ccfdc7722df445c49dc6b5d514c3544cad99b53189165f7546793933050ac7fb"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cc7ebc37b03956a070260665079665eae69e5e96007694214f3a2107af96816a"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c8b4a782aac43948308087b962c9ecb030ba98886ce6dee3ad7aafe8c5e1ce80"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:f1c23527f8e13f526fededbb96f2e7888f179fe27c51d41c2724f7059b75b2fa"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:83cc3c35aeeceb67143914db67f685206e1aa37ea837d872f4bc28d7f80917c9"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e09cdf5aad507c8faa30d97884cc42932ed3a9c2b7f22cc3ccc607bae03981b3"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:0f53253f4777cbccc426e669a2af875f26c95bd090d88593287b9a0a8ac7fa25"},
++    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:21238b19243a42f9a34a6d39e7580ceebc6da6d2f3cf729c1cff9023cb61a5f1"},
++    {file = "pymongo-4.2.0-cp38-cp38-win32.whl", hash = "sha256:766acb5b1a19eae0f7467bcd3398748f110ea5309cdfc59faa5185dcc7fd4dca"},
++    {file = "pymongo-4.2.0-cp38-cp38-win_amd64.whl", hash = "sha256:10f09c4f09757c2e2a707ad7304f5d69cb8fdf7cbfb644dbacfe5bbe8afe311b"},
++    {file = "pymongo-4.2.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:a6bf01b9237f794fa3bdad5089474067d28be7e199b356a18d3f247a45775f26"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux1_i686.whl", hash = "sha256:d8bb745321716e7a11220a67c88212ecedde4021e1de4802e563baef9df921d2"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:3be53e9888e759c49ae35d747ff77a04ff82b894dd64601e0f3a5a159b406245"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:a3efdf154844244e0dabe902cf1827fdced55fa5b144adec2a86e5ce50a99b97"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_i686.whl", hash = "sha256:a7eb5b06744b911b6668b427c8abc71b6d624e72d3dfffed00988fa1b4340f97"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_ppc64le.whl", hash = "sha256:b0be613d926c5dbb0d3fc6b58e4f2be4979f80ae76fda6e47309f011b388fe0c"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_s390x.whl", hash = "sha256:e7dcb73f683c155885a3488646fcead3a895765fed16e93c9b80000bc69e96cb"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:b537dd282de1b53d9ae7cf9f3df36420c8618390f2da92100391f3ba8f3c141a"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d98d2a8283c9928a9e5adf2f3c0181e095579e9732e1613aaa55d386e2bcb6c5"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:76892bbce743eb9f90360b3626ea92f13d338010a1004b4488e79e555b339921"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:124d0e880b66f9b0778613198e89984984fdd37a3030a9007e5f459a42dfa2d3"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:773467d25c293f8e981b092361dab5fd800e1ba318403b7959d35004c67faedc"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6673ab3fbf3135cc1a8c0f70d480db5b2378c3a70af8d602f73f76b8338bdf97"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:153b8f8705970756226dfeeb7bb9637e0ad54a4d79b480b4c8244e34e16e1662"},
++    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:01721da74558f2f64a9f162ee063df403ed656b7d84229268d8e4ae99cfba59c"},
++    {file = "pymongo-4.2.0-cp39-cp39-win32.whl", hash = "sha256:a25c0eb2d610b20e276e684be61c337396813b636b69373c17314283cb1a3b14"},
++    {file = "pymongo-4.2.0-cp39-cp39-win_amd64.whl", hash = "sha256:44b36ccb90aac5ea50be23c1a6e8f24fbfc78afabdef114af16c6e0a80981364"},
++    {file = "pymongo-4.2.0.tar.gz", hash = "sha256:72f338f6aabd37d343bd9d1fdd3de921104d395766bcc5cdc4039e4c2dd97766"},
++]
+ Werkzeug = [
+     {file = "Werkzeug-2.2.2-py3-none-any.whl", hash = "sha256:f979ab81f58d7318e064e99c4506445d60135ac5cd2e177a2de0089bfd4c9bd5"},
+     {file = "Werkzeug-2.2.2.tar.gz", hash = "sha256:7ea2d48322cc7c0f8b3a215ed73eabd7b5d75d0b50e31ab006286ccff9e00b8f"},
+Index: pyproject.toml
+===================================================================
+diff --git a/pyproject.toml b/pyproject.toml
+deleted file mode 100644
+--- a/pyproject.toml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ /dev/null	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
+@@ -1,16 +0,0 @@
+-[tool.poetry]
+-name = "hackathon-template"
+-version = "0.1.0"
+-description = ""
+-authors = ["Vincent Tiu <46623413+vincetiu8@users.noreply.github.com>"]
+-readme = "README.md"
+-packages = [{include = "hackathon_template"}]
+-
+-[tool.poetry.dependencies]
+-python = "^3.10"
+-pymongo = "^4.2.0"
+-
+-
+-[build-system]
+-requires = ["poetry-core"]
+-build-backend = "poetry.core.masonry.api"
+Index: poetry.lock
+===================================================================
+diff --git a/poetry.lock b/poetry.lock
+deleted file mode 100644
+--- a/poetry.lock	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ /dev/null	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
+@@ -1,92 +0,0 @@
+-[[package]]
+-name = "pymongo"
+-version = "4.2.0"
+-description = "Python driver for MongoDB <http://www.mongodb.org>"
+-category = "main"
+-optional = false
+-python-versions = ">=3.7"
+-
+-[package.extras]
+-aws = ["pymongo-auth-aws (<2.0.0)"]
+-encryption = ["pymongocrypt (>=1.3.0,<2.0.0)"]
+-gssapi = ["pykerberos"]
+-ocsp = ["certifi", "pyopenssl (>=17.2.0)", "requests (<3.0.0)", "service-identity (>=18.1.0)"]
+-snappy = ["python-snappy"]
+-srv = ["dnspython (>=1.16.0,<3.0.0)"]
+-zstd = ["zstandard"]
+-
+-[metadata]
+-lock-version = "1.1"
+-python-versions = "^3.10"
+-content-hash = "dc049c9858d1e0cbf9db2864b49b5715b8494d2f0a0a84addfc254d9173ddae5"
+-
+-[metadata.files]
+-pymongo = [
+-    {file = "pymongo-4.2.0-cp310-cp310-macosx_10_15_universal2.whl", hash = "sha256:b9e4981a65f8500a3a46bb3a1e81b9feb45cf0b2115ad9c4f8d517326d026940"},
+-    {file = "pymongo-4.2.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1c81414b706627f15e921e29ae2403aab52e33e36ed92ed989c602888d7c3b90"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux1_i686.whl", hash = "sha256:c549bb519456ee230e92f415c5b4d962094caac0fdbcc4ed22b576f66169764e"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:70216ec4c248213ae95ea499b6314c385ce01a5946c448fb22f6c8395806e740"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_i686.whl", hash = "sha256:8a86e8c2ac2ec87141e1c6cb00bdb18a4560f06e5f96769abcd1dda24dc0e764"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_ppc64le.whl", hash = "sha256:314b556afd72eb21a6a10bd1f45ef252509f014f80207db59c97372103c88237"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_s390x.whl", hash = "sha256:902e2c9030cb042c49750bc70d72d830d42c64ea0df5ff8630c171e065c93dd7"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:c69ef5906dcd6ec565d4d887ba97ceb2a84f3b614307ee3b4780cb1ea40b1867"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:07564178ecc203a84f63e72972691af6c0c82d2dc0c9da66ba711695276089ba"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:f47d5f10922cf7f7dfcd1406bd0926cef6d866a75953c3745502dffd7ac197dd"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:4cadaaa5c19ad23fc84559e90284f2eb003c36958ebb2c06f286b678f441285f"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d94f535df9f539615bc3dbbef185ded3b609373bb44ca1afffcabac70202678a"},
+-    {file = "pymongo-4.2.0-cp310-cp310-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:147a23cd96feb67606ac957744d8d25b013426cdc3c7164a4f99bd8253f649e3"},
+-    {file = "pymongo-4.2.0-cp310-cp310-win32.whl", hash = "sha256:ecdcb0d4e9b08b739035f57a09330efc6f464bd7f942b63897395d996ca6ebd5"},
+-    {file = "pymongo-4.2.0-cp310-cp310-win_amd64.whl", hash = "sha256:8c223aea52c359cc8fdee5bd3475532590755c269ec4d4fe581acd47a44e9952"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-macosx_10_6_intel.whl", hash = "sha256:fe0820d169635e41c14a5d21514282e0b93347878666ec9d5d3bf0eed0649948"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:e39cacee70a98758f9b2da53ee175378f07c60113b1fa4fae40cbaee5583181e"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:701d331060dae72bf3ebdb82924405d14136a69282ccb00c89fc69dee21340b4"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:e08fe1731f5429435b8dea1db9663f9ed1812915ff803fc9991c7c4841ed62ad"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_i686.whl", hash = "sha256:60c470a58c5b62b1b12a5f5458f8e2f2f67b94e198d03dc5352f854d9230c394"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_ppc64le.whl", hash = "sha256:b211e161b6cc2790e0d640ad38e0429d06c944e5da23410f4dc61809dba25095"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_s390x.whl", hash = "sha256:ed90a9de4431cbfb2f3b2ef0c5fd356e61c85117b2be4db3eae28cb409f6e2d5"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:68e1e49a5675748233f7b05330f092582cd52f2850b4244939fd75ba640593ed"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:764fc15418d94bce5c2f8ebdbf66544f96f42efb1364b61e715e5b33281b388d"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:e64442aba81ed4df1ca494b87bf818569a1280acaa73071c68014f7a884e83f1"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:83168126ae2457d1a19b2af665cafa7ef78c2dcff192d7d7b5dad6b36c73ae24"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:69d0180bca594e81cdb4a2af328bdb4046f59e10aaeef7619496fe64f2ec918c"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:80cbf0b043061451660099fff9001a7faacb2c9c983842b4819526e2f944dc6c"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:e1b8f5e2f9637492b0da4d51f78ecb17786e61d6c461ead8542c944750faf4f9"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:1a957cdc2b26eeed4d8f1889a40c6023dd1bd94672dd0f5ce327314f2caaefd4"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-win32.whl", hash = "sha256:6bd5888997ea3eae9830c6cc7964b61dcfbc50eb3a5a6ce56ad5f86d5579b11c"},
+-    {file = "pymongo-4.2.0-cp37-cp37m-win_amd64.whl", hash = "sha256:dc24737d24ce0de762bee9c2a884639819485f679bbac8ab5be9c161ef6f9b2c"},
+-    {file = "pymongo-4.2.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:193cc97d44b1e6d2253ea94e30c6f94f994efb7166e2452af4df55825266e88b"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux1_i686.whl", hash = "sha256:e152c26ffc30331e9d57591fc4c05453c209aa20ba299d1deb7173f7d1958c22"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:8a9bc4dcfc2bda69ee88cdb7a89b03f2b8eca668519b704384a264dea2db4209"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:8cbb868e88c4eee1c53364bb343d226a3c0e959e791e6828030cb78f46cfcbe3"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_i686.whl", hash = "sha256:2bfe6b59f431f40fa545547616f4acf0c0c4b64518b1f951083e3bad06eb368b"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_ppc64le.whl", hash = "sha256:ff66014687598823b6b23751884b4aa67eb934445406d95894dfc60cb7bfcc18"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_s390x.whl", hash = "sha256:31c50da4a080166bc29403aa91f4c76e0889b4f24928d1b60508a37c1bf87f9a"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:ccfdc7722df445c49dc6b5d514c3544cad99b53189165f7546793933050ac7fb"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cc7ebc37b03956a070260665079665eae69e5e96007694214f3a2107af96816a"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:c8b4a782aac43948308087b962c9ecb030ba98886ce6dee3ad7aafe8c5e1ce80"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:f1c23527f8e13f526fededbb96f2e7888f179fe27c51d41c2724f7059b75b2fa"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:83cc3c35aeeceb67143914db67f685206e1aa37ea837d872f4bc28d7f80917c9"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e09cdf5aad507c8faa30d97884cc42932ed3a9c2b7f22cc3ccc607bae03981b3"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:0f53253f4777cbccc426e669a2af875f26c95bd090d88593287b9a0a8ac7fa25"},
+-    {file = "pymongo-4.2.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:21238b19243a42f9a34a6d39e7580ceebc6da6d2f3cf729c1cff9023cb61a5f1"},
+-    {file = "pymongo-4.2.0-cp38-cp38-win32.whl", hash = "sha256:766acb5b1a19eae0f7467bcd3398748f110ea5309cdfc59faa5185dcc7fd4dca"},
+-    {file = "pymongo-4.2.0-cp38-cp38-win_amd64.whl", hash = "sha256:10f09c4f09757c2e2a707ad7304f5d69cb8fdf7cbfb644dbacfe5bbe8afe311b"},
+-    {file = "pymongo-4.2.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:a6bf01b9237f794fa3bdad5089474067d28be7e199b356a18d3f247a45775f26"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux1_i686.whl", hash = "sha256:d8bb745321716e7a11220a67c88212ecedde4021e1de4802e563baef9df921d2"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:3be53e9888e759c49ae35d747ff77a04ff82b894dd64601e0f3a5a159b406245"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:a3efdf154844244e0dabe902cf1827fdced55fa5b144adec2a86e5ce50a99b97"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_i686.whl", hash = "sha256:a7eb5b06744b911b6668b427c8abc71b6d624e72d3dfffed00988fa1b4340f97"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_ppc64le.whl", hash = "sha256:b0be613d926c5dbb0d3fc6b58e4f2be4979f80ae76fda6e47309f011b388fe0c"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_s390x.whl", hash = "sha256:e7dcb73f683c155885a3488646fcead3a895765fed16e93c9b80000bc69e96cb"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:b537dd282de1b53d9ae7cf9f3df36420c8618390f2da92100391f3ba8f3c141a"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d98d2a8283c9928a9e5adf2f3c0181e095579e9732e1613aaa55d386e2bcb6c5"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:76892bbce743eb9f90360b3626ea92f13d338010a1004b4488e79e555b339921"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:124d0e880b66f9b0778613198e89984984fdd37a3030a9007e5f459a42dfa2d3"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:773467d25c293f8e981b092361dab5fd800e1ba318403b7959d35004c67faedc"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6673ab3fbf3135cc1a8c0f70d480db5b2378c3a70af8d602f73f76b8338bdf97"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:153b8f8705970756226dfeeb7bb9637e0ad54a4d79b480b4c8244e34e16e1662"},
+-    {file = "pymongo-4.2.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:01721da74558f2f64a9f162ee063df403ed656b7d84229268d8e4ae99cfba59c"},
+-    {file = "pymongo-4.2.0-cp39-cp39-win32.whl", hash = "sha256:a25c0eb2d610b20e276e684be61c337396813b636b69373c17314283cb1a3b14"},
+-    {file = "pymongo-4.2.0-cp39-cp39-win_amd64.whl", hash = "sha256:44b36ccb90aac5ea50be23c1a6e8f24fbfc78afabdef114af16c6e0a80981364"},
+-    {file = "pymongo-4.2.0.tar.gz", hash = "sha256:72f338f6aabd37d343bd9d1fdd3de921104d395766bcc5cdc4039e4c2dd97766"},
+-]
+Index: server/pyproject.toml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[tool.poetry]\nname = \"server\"\nversion = \"0.1.0\"\ndescription = \"\"\nauthors = [\"Vincent Tiu <46623413+vincetiu8@users.noreply.github.com>\"]\nreadme = \"README.md\"\n\n[tool.poetry.dependencies]\npython = \"^3.10\"\nFlask = \"^2.2.2\"\n\n\n[build-system]\nrequires = [\"poetry-core\"]\nbuild-backend = \"poetry.core.masonry.api\"\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/server/pyproject.toml b/server/pyproject.toml
+--- a/server/pyproject.toml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/server/pyproject.toml	(date 1663982795079)
+@@ -8,6 +8,7 @@
+ [tool.poetry.dependencies]
+ python = "^3.10"
+ Flask = "^2.2.2"
++pymongo = {extras = ["srv"], version = "^4.2.0"}
+ 
+ 
+ [build-system]
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"989c1926-623a-4640-992a-db48e651abef\" name=\"Changes\" comment=\"add auth\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/client/pages/main/dashboard.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/client/pages/main/dashboard.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/pyproject.toml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pyproject.toml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/server/index.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/server/index.py\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"JavaScript File\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2F0HG3ldShSFolGOpNx3YNbk1Cv\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.8.0&quot;,\n    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.7.18&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/home/vincetiu/Documents/github/hackathon-template/client/public/images&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,\n    &quot;nodejs_interpreter_path&quot;: &quot;/home/vincetiu/.asdf/shims/node&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;/home/vincetiu/.asdf/shims/yarn&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/client/public/images\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Python.index\">\n    <configuration name=\"index\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"hackathon-template\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/server\" />\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/server/index.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\n      <option name=\"INPUT_FILE\" value=\"\" />\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"dev\" type=\"js.build_tools.npm\" nameIsGenerated=\"true\">\n      <package-json value=\"$PROJECT_DIR$/client/package.json\" />\n      <command value=\"run\" />\n      <scripts>\n        <script value=\"dev\" />\n      </scripts>\n      <node-interpreter value=\"project\" />\n      <envs />\n      <method v=\"2\" />\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Python.index\" />\n        <item itemvalue=\"Python.index\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"989c1926-623a-4640-992a-db48e651abef\" name=\"Changes\" comment=\"\" />\n      <created>1663621983966</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1663621983966</updated>\n      <workItem from=\"1663621990090\" duration=\"184000\" />\n      <workItem from=\"1663676542858\" duration=\"292000\" />\n      <workItem from=\"1663886045375\" duration=\"522000\" />\n      <workItem from=\"1663933498679\" duration=\"1194000\" />\n      <workItem from=\"1663939757203\" duration=\"5433000\" />\n      <workItem from=\"1663952300522\" duration=\"7247000\" />\n      <workItem from=\"1663963844623\" duration=\"939000\" />\n      <workItem from=\"1663964801226\" duration=\"86000\" />\n      <workItem from=\"1663965209957\" duration=\"261000\" />\n      <workItem from=\"1663965501638\" duration=\"2253000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"initial commit\">\n      <created>1663622027601</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663622027601</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"initial commit\">\n      <created>1663622056877</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663622056877</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"add tailwind\">\n      <created>1663952359118</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663952359118</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"add auth\">\n      <created>1663964718406</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1663964718406</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"5\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"initial commit\" />\n    <MESSAGE value=\"add tailwind\" />\n    <MESSAGE value=\"add auth\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"add auth\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\n          <url>file://$PROJECT_DIR$/server/index.py</url>\n          <line>31</line>\n          <option name=\"timeStamp\" value=\"2\" />\n        </line-breakpoint>\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\n          <url>file://$PROJECT_DIR$/server/index.py</url>\n          <line>40</line>\n          <option name=\"timeStamp\" value=\"3\" />\n        </line-breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\n    <SUITE FILE_PATH=\"coverage/hackathon_template$index.coverage\" NAME=\"index Coverage Results\" MODIFIED=\"1663967719756\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"true\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$/server\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1293cc35d4a9efd59753f9656c0525afa33fd0f8)
++++ b/.idea/workspace.xml	(date 1663982768299)
+@@ -3,9 +3,13 @@
+   <component name="ChangeListManager">
+     <list default="true" id="989c1926-623a-4640-992a-db48e651abef" name="Changes" comment="add auth">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/client/pages/main/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/main/dashboard.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/server/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/k8s/client.yml" beforeDir="false" afterPath="$PROJECT_DIR$/k8s/client.yml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/k8s/server.yml" beforeDir="false" afterPath="$PROJECT_DIR$/k8s/server.yml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/server/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/poetry.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/server/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pyproject.toml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -117,6 +121,7 @@
+       <workItem from="1663964801226" duration="86000" />
+       <workItem from="1663965209957" duration="261000" />
+       <workItem from="1663965501638" duration="2253000" />
++      <workItem from="1663981777595" duration="991000" />
+     </task>
+     <task id="LOCAL-00001" summary="initial commit">
+       <created>1663622027601</created>
+@@ -186,6 +191,6 @@
+     </breakpoint-manager>
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+-    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967719756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
++    <SUITE FILE_PATH="coverage/hackathon_template$index.coverage" NAME="index Coverage Results" MODIFIED="1663967956752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
+   </component>
+ </project>
+\ No newline at end of file
