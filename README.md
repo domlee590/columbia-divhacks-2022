@@ -1,17 +1,19 @@
-# Hackathon Template
-This is an example template to build hackathon apps out of.
+# Inspiration
+We were inspired to create this project because we wanted to create a non-monetary incentive for users to act more sustainably in their cities. Love is undoubtedly one of the most powerful emotions, so we wanted to channel this into helping encourage more sustainable lifestyles and revolutionize the dating scene for the better. Indeed, more than 323 million people use online dating apps. With Blossom, people can pursue their relationship and environmental goals at the same time.
 
-## Stack
-### DevOps
-- Docker
-- K8s
+# What it does
+The fundamentals of Blossom are similar to other dating apps. Users create a profile and match with other users, from that point onwards they can text using the app. Blossom’s key function is suggesting green date ideas for users who matched. By taking the user’s location, Blossom has an interactive map that displays date activities (ie, plant a tree, upstate hiking) with a green score. To expand our database, users can create personal waypoints and recommend their green date activity to the community.
 
-### Front-end
-- Next.js
-- Tailwind
-- Three.js
+# How we built it
+As a team, we realized we all specialized in different aspects of the development stack. We had 1 designer, 1 front-end engineer, 1 full-stack engineer, and 1 back-end engineer. As such, we partitioned the work so that we were all able to work to our strengths. We built this technology using a Next.js front end running React.js along with Tailwind for styling. We also have a python backend and everything is Dockerized, hosted with Kuberenetes on Google Cloud. We used Domain.com to get the url "blossomdating.tech" and used Twilio to send messages to users about new locations to try.
 
-### Back-end
-- Express
-- MongoDB
-- Node.js
+# Challenges we ran into
+We ran into a significant number of challenges when developing this project. The main challenge we had was cooperating with the front-end design - each of us had different technical experiences and backgrounds with front-end development, which meant that we sometimes conflicted over the best way to implement certain features. However, through discussion, we were able to work through these differences to create our end product.
+
+Another significant challenge was handling the scope of the project. Originally, we wanted to integrate many other features into the app but given the time constraints, we slowly realized that many would be unfeasible to implement. As such, we had to communicate with each other and evolve our end goal to be adjusted to the amount of time we had left.
+
+# Accomplishments that we're proud of
+We’re proud to have a fully-working website that integrates all of the essential features we think our MVP should have. We’re also proud of the skills and experience we gained working with new technologies along with the journey of being able to learn concepts from people from other schools and backgrounds for example. One of the ways we were able to accomplish this project was due to the difference in everyone's skills some of us have great knowledge of biology and eco-friendly behaviors, and someone else in our group is knowledgeable in a lot of java and has experience talking to professionals and doing pitches. And the remaining two have strong knowledge in web development.
+
+# What we learned
+Our team walked into this Hackathon with very different skill sets. So we had to learn from each other. Half the team is first-time hackers, and they learn technical skills (ie, front-end development, web design) from scratch with the team’s more experienced members. However, we were also able to learn from members without any computer science background. Tina is a biomedical engineering major with less than 1 year of coding experience, but the team learned a lot about what it means to be eco-friendly from her. For example, Tina cited different papers that show tote bags are not sustainable, contrary to popular belief. Overall, we grew as a team as we filled each other’s gaps.
